@@ -44,12 +44,14 @@ jobs:
           name: pdf
           path: pdf/*
           if-no-files-found: error
+      - name: Generate README.html
+        run: scripts/build-readme.sh
       - name: Create Release
         uses: softprops/action-gh-release@v2
         if: github.ref == 'refs/heads/main' || github.event_name == 'pull_request' || startsWith(github.ref, 'refs/tags/')
         with:
           tag_name: ${{ github.ref_name }}_${{ github.sha }}
           files: |
-            README.adoc
+            README.html
             html.zip
             pdf/*
