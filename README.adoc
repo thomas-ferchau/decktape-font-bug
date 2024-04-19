@@ -132,8 +132,6 @@ git submodule init
 
 . Install https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository[Docker Engine^] (the link points to the Ubuntu instructions) from the Linux command line.
 
-. Follow these https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user[instructions^] to use Docker as a non-root user.
-
 . Check the successful installation by running `docker run hello-world`
 
 
