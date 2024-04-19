@@ -50,5 +50,6 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}_${{ github.sha }}
           files: |
+            README.adoc
             html.zip
             pdf/*
