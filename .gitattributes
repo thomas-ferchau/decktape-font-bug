@@ -1,0 +1,2 @@
+# Leave line-breaks unmodified (do not convert to CR LF in Windows to avoid broken scripts in Linux):
+* text=auto eol=lf
