@@ -1,0 +1,166 @@
+= Decktape Container Font Bug
+:toc: left
+:toclevels: 2
+
+== Bug Description
+
+When generating a PDF with the _decktape_ Docker container from _reveal.js_ slides, fonts do not work properly:
+
+* The font in the PDF does not look like _Arial_ or _Helvetica_ or _sans-serif_ (defined as `font-family`).
+
+* Titles are not bold in the PDF (but they are in the HTML file)
+
+* Acrobat Reader (on Windows) reports:
++
+====
+Cannot extract the embedded font '*AAAAAA+WenQuanYiZenHei*'. Some characters may not display or print correctly.
+====
+
+* The problems also occur without custom CSS:
++
+The default _reveal.js_ theme defines _Source Sans Pro, Helvetica, sans-serif_ as `font-family`. +
+Now Acrobat reader complains about the font *BAAAAA+SourceSansPro-Regular*.
+
+=== Strange Behaviour
+
+Strangely, some minor changes in the Asciidoc file removed the Acrobat Reader error message (for example, replacing some words by others!).
+
+I cannot reproduce this right now, but the effect was definitely there. It made me try a lot of changes in the document before finding a <<workaround>>...
+
+If it would help, I might be able to find a combination that changes the behaviour in Acrobat Reader. But I guess the root problem is not really related to that.
+
+=== Details and Versions
+
+Decktape image: `astefanutti/decktape:3.12.0` +
+Asciidoctor image: `asciidoctor/docker-asciidoctor:1.69.0` +
+Acrobat Reader version (Windows): `24.001.20643`
+
+The HTML file was created with _Asciidoctor reveal.js_, but that should not matter.
+
+It also includes _FontAwesome_ to enable the use of icons.
+
+
+== Reproduce the Bug
+
+Run the following commands (after following the <<setup>> instructions):
+
+----
+scripts/build-html.sh && scripts/build-pdf.sh
+----
+
+This produces the following files:
+
+* `fontbug.html`
+* `fontbug.pdf` (with the problems)
+* `fontbug-workaround.pdf` (problems fixed, see <<workaround>>).
+
+
+== Workaround [[workaround]]
+
+I found a workaround in removing `wqy-zenhei` from `Dockerfile`:
+
+Replace these lines...
+[source%nowrap]
+----
+    ttf-freefont \
+    wqy-zenhei && \
+    # /etc/fonts/conf.d/44-wqy-zenhei.conf overrides 'monospace' matching FreeMono.ttf in /etc/fonts/conf.d/69-unifont.conf
+    mv /etc/fonts/conf.d/44-wqy-zenhei.conf /etc/fonts/conf.d/74-wqy-zenhei.conf && \
+----
+
+...with this...
+----
+ttf-freefont && \
+----
+
+...as done in
+https://github.com/thomas-ferchau/decktape/pull/1/commits/416f7e14133e6a472aa3fb44794a739cf1515c96[this commit^].
+
+That fixes the problems as you can see in `fontbug-workaround.pdf`. That file is created with the container image `ghcr.io/thomas-ferchau/decktape:pr-1` which includes this modification in a fork of _decktape_.
+
+The workaround does not work without custom CSS - in that case, Acrobat Reader complains about the _reveal.js_ default font: *BAAAAA+SourceSansPro-Regular*.
+
+If I understand it correctly, `/etc/fonts/conf.d/74-wqy-zenhei.conf` defines to prefer its fonts which might cause the problem.
+
+=== Changes required to build the image
+
+To be able to build the image I had to make these changes after forking the _decktape_ repository (not relevant for the bug):
+
+* Update Chromium version
++
+Error message with previous version:
++
+----
+chromium-123.0.6312.122-r0:
+  breaks: world[chromium=122.0.6261.94-r0]
+----
++
+Also see this https://github.com/thomas-ferchau/decktape/pull/5[pull request^].
+
+* Enable the image workflow for GitHub Actions:
++
+--
+. Also build the image from this repository
+. Always push docker image to enable using it while not yet merged
+. Use default image tags so that in pull request #X the image tag `:pr-X` is created
+--
++
+Also see this https://github.com/thomas-ferchau/decktape/commit/0a942ea7676585e233d603d37a8b989904c82efc[commit^].
+
+
+== Setup [[setup]]
+
+=== Download reveal.js as Git Submodule
+
+NOTE: Run the following command from the directory of this README.
+
+[source,bash]
+----
+git submodule init
+----
+
+
+=== Install Docker Engine
+
+* Windows
+
+. Install https://learn.microsoft.com/en-us/windows/wsl/install[WSL^] (Windows Subsystem for Linux). This creates a Virtual Machine running Ubuntu.
+
+. Start the Linux command line by running `wsl` from the Start Menu or in a Windows command line. Then proceed with the Linux instructions below.
+
+* Linux / WSL (Windows Subsystem for Linux)
+
+. Install https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository[Docker Engine^] (the link points to the Ubuntu instructions) from the Linux command line.
+
+. Follow these https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user[instructions^] to use Docker as a non-root user.
+
+. Check the successful installation by running `docker run hello-world`
+
+
+== Generate Slides [[generate]]
+
+NOTE: Run the following commands from the directory of this README in `bash`.
+
+[source,bash]
+----
+# Create reveal.js HTML slides from Asciidoc file with the Asciidoctor container
+scripts/build-html.sh
+
+# Create PDF file from reveal.js HTML slides file with the Decktape container
+scripts/build-pdf.sh
+----
+
+=== Troubleshooting
+
+In case of this error message...
+====
+Error response from daemon: Head "https://ghcr.io/v2/thomas-ferchau/decktape/manifests/pr-1": denied: denied
+====
+
+...remove your ghcr.io credentials for accessing the public image repository:
+
+----
+docker logout ghcr.io
+docker pull ghcr.io/thomas-ferchau/decktape:pr-1
+----
+
