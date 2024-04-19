@@ -24,13 +24,20 @@ jobs:
           chmod ogu+rw pdf
       - name: Generate HTML Slides with Asciidoctor reveal.js
         run: scripts/build-html.sh
-      - name: Generate PDF from HTML Slides with decktape
-        run: scripts/build-pdf.sh
-      - name: Upload artifacts
+      - name: Upload HTML artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: slides
+          name: html
           path: |
             *.html
-            pdf/*
+            reveal.js/dist/**
+            reveal.js/plugin/**
+          if-no-files-found: error
+      - name: Generate PDF from HTML Slides with decktape
+        run: scripts/build-pdf.sh
+      - name: Upload PDF artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdf
+          path: pdf/*
           if-no-files-found: error
