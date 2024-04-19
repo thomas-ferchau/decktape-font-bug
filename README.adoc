@@ -116,7 +116,7 @@ NOTE: Run the following command from the directory of this README.
 
 [source,bash]
 ----
-git submodule init
+git submodule init && git pull --recurse-submodules
 ----
 
 
