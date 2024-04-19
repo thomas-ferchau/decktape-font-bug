@@ -21,15 +21,11 @@ Cannot extract the embedded font '*AAAAAA+WenQuanYiZenHei*'. Some characters may
 The default _reveal.js_ theme defines _Source Sans Pro, Helvetica, sans-serif_ as `font-family`. +
 Now Acrobat reader complains about the font *BAAAAA+SourceSansPro-Regular*.
 
-=== Strange Behaviour
+=== Example Files
 
-Strangely, some minor changes in the Asciidoc file removed the Acrobat Reader error message (for example, replacing some words by others!).
+You can https://github.com/thomas-ferchau/decktape-font-bug/releases/tag/main_079cc82d908c1dbf44b61d16fc5fbe726397e529[download example PDF and HTML files^] that show the problem and a <<workaround>>.
 
-I cannot reproduce this right now, but the effect was definitely there. It made me try a lot of changes in the document before finding a <<workaround>>...
-
-If it would help, I might be able to find a combination that changes the behaviour in Acrobat Reader. But I guess the root problem is not really related to that.
-
-=== Details and Versions
+=== Versions and more Details
 
 Decktape image: `astefanutti/decktape:3.12.0` +
 Asciidoctor image: `asciidoctor/docker-asciidoctor:1.69.0` +
@@ -38,6 +34,14 @@ Acrobat Reader version (Windows): `24.001.20643`
 The HTML file was created with _Asciidoctor reveal.js_, but that should not matter.
 
 It also includes _FontAwesome_ to enable the use of icons.
+
+=== Strange Behaviour
+
+Strangely, some minor changes in the Asciidoc file removed the Acrobat Reader error message (for example, replacing some words by others!).
+
+I cannot reproduce this right now, but the effect was definitely there. It made me try a lot of changes in the document before finding a <<workaround>>...
+
+If it would help, I might be able to find a combination that changes the behaviour in Acrobat Reader. But I guess the root problem is not really related to that.
 
 
 == Reproduce the Bug
