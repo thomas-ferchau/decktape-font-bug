@@ -2,6 +2,8 @@
 :toc: left
 :toclevels: 2
 
+Issue in DeckTape repository: https://github.com/astefanutti/decktape/issues/329[#329^]
+
 == Bug Description
 
 When generating a PDF with the _decktape_ Docker container from _reveal.js_ slides, fonts do not work properly:
