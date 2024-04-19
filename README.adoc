@@ -51,8 +51,8 @@ scripts/build-html.sh && scripts/build-pdf.sh
 This produces the following files:
 
 * `fontbug.html`
-* `fontbug.pdf` (with the problems)
-* `fontbug-workaround.pdf` (problems fixed, see <<workaround>>).
+* `pdf/fontbug.pdf` (with the problems)
+* `pdf/fontbug-workaround.pdf` (problems fixed, see <<workaround>>).
 
 
 == Workaround [[workaround]]

@@ -27,7 +27,6 @@ jobs:
         with:
           name: slides
           path: |
-            fontbug.html
-            fontbug.pdf
-            fontbug-workaround.pdf
+            *.html
+            pdf/*
           if-no-files-found: error
