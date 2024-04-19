@@ -1,0 +1,11 @@
+.reveal,
+.reveal h1,
+.reveal h2,
+.reveal dl .hdlist1,
+.reveal dd .hdlist1,
+.reveal .preamble,
+.reveal p,
+.reveal a
+{
+    font-family: Arial, Helvetica, sans-serif;
+}

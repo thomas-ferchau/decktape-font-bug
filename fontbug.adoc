@@ -1,0 +1,31 @@
+= Decktape Font Bug Reproducer
+include::.asciidoctorconfig[]
+
+Acrobat Reader reports missing font WenQuanYiZenHei +
+Font is not Arial or Helvetica (see letter Q)
+
+== TODOs [[todos]]
+
+=== TODOs (1) [[slide1]]
+
+Questions::
+* Clarify <<slide2,slide2>>
+* Note <<slide2,slide2>>
+
+Other Things::
+* Request membership to Teams
+* Add links to Teams to our <<slide2,slide2>>
+* Review material
+
+=== TODOs (2) [[slide2]]
+
+Something else::
+* Is there more than what we already have?
+
+Source files::
+* Add Wackamole files to our folder. +
+Note: Some are available in newer versions. Maybe only provide links?
+* Add links to files to our <<slide1,sources>>
+
+More material::
+* <<slide1,Creating the stuff>>
