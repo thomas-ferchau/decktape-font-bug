@@ -4,10 +4,11 @@ name: Documents Pipeline
 
 on:
   push:
-
   # Allows to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+permissions:
+  contents: write
 
 jobs:
 
@@ -33,6 +34,8 @@ jobs:
             reveal.js/dist/**
             reveal.js/plugin/**
           if-no-files-found: error
+      - name: Create HTML archive
+        run: zip -r -q html.zip *.html reveal.js/dist reval.js/plugin
       - name: Generate PDF from HTML Slides with decktape
         run: scripts/build-pdf.sh
       - name: Upload PDF artifacts
@@ -41,3 +44,11 @@ jobs:
           name: pdf
           path: pdf/*
           if-no-files-found: error
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref == 'refs/heads/main' || github.event_name == 'pull_request' || startsWith(github.ref, 'refs/tags/')
+        with:
+          tag_name: ${{ github.ref_name }}_${{ github.sha }}
+          files: |
+            html.zip
+            pdf/*
