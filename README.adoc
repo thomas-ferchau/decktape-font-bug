@@ -25,7 +25,7 @@ Now Acrobat reader complains about the font *BAAAAA+SourceSansPro-Regular*.
 
 === Example Files
 
-You can https://github.com/thomas-ferchau/decktape-font-bug/releases[download example PDF and HTML files^] that show the problem and a <<workaround>>.
+You can https://github.com/thomas-ferchau/decktape-font-bug/releases[download example PDF and HTML files^] that show the problem and the results with the <<workaround>> applied.
 
 === Versions and more Details
 
